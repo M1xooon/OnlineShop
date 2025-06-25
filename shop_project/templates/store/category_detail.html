@@ -1,0 +1,19 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<h2>Категория: {{ category.name }}</h2>
+<div class="product-list">
+    {% for product in products %}
+        <div class="product-card hover-effect">
+            <a href="{% url 'store:product_detail' product.slug %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}₽</p>
+            </a>
+        </div>
+    {% empty %}
+        <p>Нет товаров в этой категории.</p>
+    {% endfor %}
+</div>
+{% endblock %}

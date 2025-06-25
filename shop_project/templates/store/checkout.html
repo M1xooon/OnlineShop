@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %}
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<h2>Оформление заказа</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="address">Адрес доставки:</label>
+    <input type="text" name="address" required placeholder="Введите ваш адрес">
+
+    <label for="notes">Комментарий к заказу (необязательно):</label>
+    <textarea name="notes" rows="4"></textarea>
+
+    <button type="submit">Подтвердить заказ</button>
+</form>
+
+<h3>Товары в заказе:</h3>
+<ul>
+    {% for item in cart_items %}
+    <li>{{ item.product.name }} ({{ item.size }}) — {{ item.quantity }} шт. × {{ item.product.price }}₽</li>
+    {% endfor %}
+</ul>
+
+<p><strong>Итого: {{ total_price }}₽</strong></p>
+{% endblock %}

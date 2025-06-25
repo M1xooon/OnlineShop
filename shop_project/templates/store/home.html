@@ -1,0 +1,38 @@
+{% extends 'store/base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h2>Распродажа</h2>
+<div class="sale-slider">
+    {% for product in sale_products %}
+    <div class="slide">
+        <a href="{% url 'store:product_detail' product.id %}">
+            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+            <p>{{ product.name }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>Популярные товары</h2>
+<div class="product-list">
+    {% for product in popular_products %}
+    <div class="product-card">
+        <a href="{% url 'store:product_detail' product.id %}">
+            <div class="product-image">
+                <img class="preview-img" src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                {% if product.images.count > 1 %}
+                <div class="thumbs">
+                    {% for img in product.images.all %}
+                    <img class="thumb" src="{{ img.image.url }}" alt="">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.price }} ₽</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

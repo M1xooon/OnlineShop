@@ -1,0 +1,42 @@
+{% extends 'store/base.html' %}
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+<h1>Профиль пользователя</h1>
+
+<form method="post" action="{% url 'store:update_profile' %}">
+    {% csrf_token %}
+    <label>Имя: <input type="text" name="first_name" value="{{ user.first_name }}" /></label><br/>
+    <label>Фамилия: <input type="text" name="last_name" value="{{ user.last_name }}" /></label><br/>
+    <label>Email: <input type="email" name="email" value="{{ user.email }}" /></label><br/>
+    <button type="submit">Обновить данные</button>
+</form>
+
+<h2>Ваши заказы</h2>
+{% if orders %}
+<table>
+    <thead>
+        <tr>
+            <th>ID заказа</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Сумма</th>
+            <th>Детали</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+            <td>{{ order.get_status_display }}</td>
+            <td>{{ order.items.all|calc_order_total }} ₽</td>
+            <td><a href="{% url 'store:order_detail' order.id %}">Просмотр</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Заказов нет</p>
+{% endif %}
+{% endblock %}

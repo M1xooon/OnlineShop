@@ -1,0 +1,22 @@
+{% extends 'store/base.html' %}
+{% block title %}Заказ #{{ order.id }}{% endblock %}
+
+{% block content %}
+<h2>Детали заказа #{{ order.id }}</h2>
+
+<p><strong>Дата:</strong> {{ order.created_at|date:"d.m.Y H:i" }}</p>
+<p><strong>Адрес доставки:</strong> {{ order.address }}</p>
+<p><strong>Комментарий:</strong> {{ order.notes|default:"—" }}</p>
+<p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+
+<h3>Товары:</h3>
+<ul>
+    {% for item in order.items.all %}
+        <li>{{ item.product.name }} ({{ item.size }}) — {{ item.quantity }} × {{ item.price }}₽</li>
+    {% endfor %}
+</ul>
+
+<p><strong>Итого:</strong> {{ order.total_price }}₽</p>
+
+<a href="{% url 'store:profile' %}">← Назад к профилю</a>
+{% endblock %}
